@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+    sanic:
+        build: .
+        command: python -u main.py
+        ports: 
+            - "5000:5000"
+
+        volumes: 
+            - .:/sanic
+
+        links: 
+            - db
+            - redis
+
+        environment:
+            MONGODB_HOSTNAME: db
+            REDIS_HOSTNAME: redis
+        networks:
+            - sanic
+
+    db:
+        image: mongo:3.0.2
+        volumes: 
+            - "/data:/data/db"
+        networks:
+            - sanic
+
+    redis:
+        image: redis
+        build: /redis/Dockerfile
+        networks: 
+            - sanic
+
+networks: 
+    sanic:
+        driver: bridge
