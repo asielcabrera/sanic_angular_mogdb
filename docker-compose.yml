@@ -29,7 +29,6 @@ services:
 
     redis:
         image: redis
-        build: /redis/Dockerfile
         networks: 
             - sanic
 
